@@ -57,7 +57,7 @@
 		%>
 			<div class="card">
 				<div class="card-image" style="padding:2vh;">
-					<img src="<%=photo%>" style="width:17vh;height:19vh;">
+					<img src="<%=photo%>" style="width:75vh;height:50vh;">
 				</div>
 				<div class="card-content">
 					<h style="font-size:20px;font-weight:bold;"><%=name%></h>
