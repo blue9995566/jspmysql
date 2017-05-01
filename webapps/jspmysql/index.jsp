@@ -35,7 +35,7 @@
 			<nav>
 				<div class="nav-wrapper">
 					<center>
-						<h style="font-size:25px;font-weight:bold;">旅遊景點</h>
+						<h style="font-size:25px;font-weight:bold;">英雄聯盟</h>
 					</center>
 				</div>
 			</nav>

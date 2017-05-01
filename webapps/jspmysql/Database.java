@@ -32,26 +32,24 @@ public class Database{
       System.out.println(ex);
     }
   }
-  public void insertData(String name , String location , String photo , String description){
+  public void insertData(String name  , String photo , String description){
     try{
-      String sql = "insert into travel (name, location , photo , description) values (?,?,?,?)";
+      String sql = "insert into newtable (name , photo , description) values (?,?,?)";
       PreparedStatement ps = con.prepareStatement(sql);
       ps.setString(1,name);
-      ps.setString(2,location);
-      ps.setString(3,photo);
-      ps.setString(4,description);
+      ps.setString(2,photo);
+      ps.setString(3,description);
       int a = ps.executeUpdate();
     }catch(Exception ex){
       System.out.println(ex);
     }
   }
-  public void editData(String id ,String name , String location , String photo , String description){
+  public void editData(String id ,String name  , String photo , String description){
     try{
       System.out.println("name = " + name);
-      System.out.println("location = " + location);
       System.out.println("description = " + description);
       System.out.println("photo = " + photo);
-      String sql = "update travel set name = '" + name + "' , location = '" + location + "' , description = '" + description + "' , photo = '" + photo + "' where id = " + id;
+      String sql = "update newtable set name = '" + name + "' , description = '" + description + "' , photo = '" + photo + "' where id = " + id;
       int a = stmt.executeUpdate(sql);
     }catch(Exception ex){
       System.out.println(ex);
@@ -59,7 +57,7 @@ public class Database{
   }
   public void deleteData(String id){
     try{
-      String sql = "delete from travel where id = " + id + ";";
+      String sql = "delete from newtable where id = " + id + ";";
       int a = stmt.executeUpdate(sql);
     }catch(Exception ex){
       System.out.println(ex);

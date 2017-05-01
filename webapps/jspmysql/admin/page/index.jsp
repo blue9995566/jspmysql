@@ -1,27 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page language="java" import="java.sql.*" %>
 <jsp:useBean id = "database" class="com.database.Database">
-  <jsp:setProperty property="ip" name="database" value="140.120.54.114" />
+  <jsp:setProperty property="ip" name="database" value="140.120.57.34" />
   <jsp:setProperty property="port" name="database" value="3306" />
-  <jsp:setProperty property="db" name="database" value="jspuser" />
+  <jsp:setProperty property="db" name="database" value="jspdb" />
   <jsp:setProperty property="user" name="database" value="jspuser" />
   <jsp:setProperty property="password" name="database" value="jspuser" />
 </jsp:useBean>
 <%
   database.connectDB();
   request.setCharacterEncoding("UTF-8");
-
   String p_name = request.getParameter("name");
   String p_id = request.getParameter("id");
   String p_photo = request.getParameter("photo");
-  String p_location = request.getParameter("location");
   String p_description = request.getParameter("description");
-  if (p_name != null && p_id != null && p_photo != null && p_location != null && p_description != null){
+  if (p_name != null && p_id != null && p_photo != null  && p_description != null){
     database.connectDB();
-    database.editData(p_id , p_name , p_location ,p_photo , p_description);
+    database.editData(p_id , p_name  ,p_photo , p_description);
   }
-
-  database.query("select * from travel;");
+  database.query("select * from newtable;");
   ResultSet rs = database.getRS();
 %>
 <!DOCTYPE html>
@@ -73,7 +70,7 @@
                 <div class="top-left-part">
                     <!-- Logo -->
                     <a class="logo" href="index.jsp"></a>
-                    <h style="font-size:25px;">旅遊景點後台管理</h>
+                    <h style="font-size:25px;">英雄聯盟後台管理</h>
 
                 </div>
             </div>
@@ -130,7 +127,6 @@
                                         <tr>
                                             <th>id</th>
                                             <th>名稱</th>
-                                            <th>地點</th>
                                             <th>描述</th>
                                             <th>相片</th>
                                             <th>新增時間</th>
@@ -145,18 +141,16 @@
                                             String id = rs.getString("id");
                                             String name = rs.getString("name");
                                             String photo = rs.getString("photo");
-                                            String location = rs.getString("location");
                                             String description = rs.getString("description");
-                                            String createdAt = rs.getString("createdAt");
+                                            String time = rs.getString("time");
                                       %>
                                         <tr>
                                           <form id = "form<%=id%>" action="index.jsp" method="POST">
                                             <td><%=id%></td>
                                             <td id = "name<%=id%>"><%=name%></td>
-                                            <td id = "location<%=id%>"><%=location%></td>
                                             <td id = "description<%=id%>"><%=description%></td>
                                             <td id = "photo<%=id%>"><img id = "photoURL<%=id%>" src="<%=photo%>" width=50></td>
-                                            <td><%=createdAt%></td>
+                                            <td><%=time%></td>
                                             <td>
                                               <button type = "button" id = "edit<%=id%>" type="button" class="btn btn-primary">修改</button>
                                             </td>
@@ -185,10 +179,6 @@
                                     <input type="text" class="form-control" name="name">
                                   </div>
                                   <div class="form-group">
-                                      <label for="location" class="control-label">地點</label>
-                                      <input type="text" class="form-control" name="location">
-                                  </div>
-                                  <div class="form-group">
                                       <label for="description" class="control-label">描述</label>
                                       <input type="text" class="form-control" name="description">
                                   </div>
@@ -198,7 +188,7 @@
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                                    <input type="submit" class="btn btn-primary" value="新增景點">
+                                    <input type="submit" class="btn btn-primary" value="新增英雄">
                                   </div>
                                 </form>
                             </div>
@@ -234,7 +224,6 @@
             var id = $(this).attr("id").split("edit")[1];
             $("#name" + id).html('<input type="text" name="name" id = "input_name' + id + '"value="' + $("#name" + id).text() + '" />');
             $("#photo" + id).html('<input type="text" name="photo" id = "input_photo' + id + '"value="' + $("#photoURL" + id).attr("src") + '" />');
-            $("#location" + id).html('<input type="text" name="location" id = "input_location' + id + '"value="' + $("#location" + id).text() + '" />');
             $("#description" + id).html('<textarea name="description" id = "input_description' + id + '"value="' + $("#description" + id).text() + '" >' + $("#description" + id).text() +'</textarea>');
             $(this).attr("id","storeEdit" + id);
             $(this).html("儲存");
@@ -242,7 +231,6 @@
           case "儲存":
             var id = $(this).attr("id").split("storeEdit")[1];
             var name = $("#input_name" + id).val();
-            var location = $("#input_location" + id).val();
             var description = $("#input_description" + id).val();
             var photo = $("#input_photo" + id).val();
             // $("#name" + id).html(name);
@@ -254,25 +242,20 @@
             var id_input = $("<input>").attr("type", "hidden").attr("name", "id").val(id);
             $("#form" + id).append(id_input);
             $("#form" + id).append($("#input_name" + id));
-            $("#form" + id).append($("#input_location" + id));
             $("#form" + id).append($("#input_photo" + id));
             $("#form" + id).append($("#input_description" + id));
             $("#form" + id).submit();
           break;
           case "刪除":
             var id = $(this).attr("id").split("delete")[1];
-
             var id_input = $("<input>").attr("type", "hidden").attr("name", "id").val(id);
             var name_input = $("<input>").attr("type", "hidden").attr("name", "name").val($("#name" + id).text());
             var photo_input = $("<input>").attr("type", "hidden").attr("name", "photo").val($("#photoURL" + id).attr("src"));
-            var location_input = $("<input>").attr("type", "hidden").attr("name", "location").val($("#location" + id).text());
             var description_input = $("<input>").attr("type", "hidden").attr("name", "description").val($("#description" + id).text());
-
             $("#form" + id).attr("action","delete.jsp");
             $("#form" + id).append(id_input);
             $("#form" + id).append(name_input);
             $("#form" + id).append(photo_input);
-            $("#form" + id).append(location_input);
             $("#form" + id).append(description_input);
             $("#form" + id).submit();
           break;

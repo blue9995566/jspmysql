@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page language="java" import="java.sql.*" %>
 <jsp:useBean id = "database" class="com.database.Database">
-  <jsp:setProperty property="ip" name="database" value="140.120.54.114" />
+  <jsp:setProperty property="ip" name="database" value="140.120.57.34" />
   <jsp:setProperty property="port" name="database" value="3306" />
-  <jsp:setProperty property="db" name="database" value="jspuser" />
+  <jsp:setProperty property="db" name="database" value="jspdb" />
   <jsp:setProperty property="user" name="database" value="jspuser" />
   <jsp:setProperty property="password" name="database" value="jspuser" />
 </jsp:useBean>
@@ -13,10 +13,9 @@
   String p_name = request.getParameter("name");
   String p_id = request.getParameter("id");
   String p_photo = request.getParameter("photo");
-  String p_location = request.getParameter("location");
   String p_description = request.getParameter("description");
   String message = "";
-  if (p_name != null && p_id != null && p_photo != null && p_location != null && p_description != null){
+  if (p_name != null && p_id != null && p_photo != null && p_description != null){
     database.connectDB();
     database.deleteData(p_id);
     message = "刪除成功！";
@@ -75,7 +74,7 @@
                 <div class="top-left-part">
                     <!-- Logo -->
                     <a class="logo" href="index.jsp"></a>
-                    <h style="font-size:25px;">旅遊景點後台管理</h>
+                    <h style="font-size:25px;">英雄聯盟後台管理</h>
 
                 </div>
             </div>
@@ -122,8 +121,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                       <div class="white-box">
-                          <h3 class="box-title"><%=p_name%></h3>
-                          <p>地點：<%=p_location%></p>
+                          <h3 class="box-title"><%=p_name%></h3><%out.println(p_id);%>
                           <p>照片：<img src="<%=p_photo%>"/></p>
                           <p>描述：<%=p_description%></p>
                           <button class="btn btn-primary" onclick="window.open('index.jsp','_self')">確定</button>

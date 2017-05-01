@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page language="java" import="java.sql.*" %>
 <jsp:useBean id = "database" class="com.database.Database">
-  <jsp:setProperty property="ip" name="database" value="140.120.54.114" />
+  <jsp:setProperty property="ip" name="database" value="140.120.57.34" />
   <jsp:setProperty property="port" name="database" value="3306" />
-  <jsp:setProperty property="db" name="database" value="jspuser" />
+  <jsp:setProperty property="db" name="database" value="jspdb" />
   <jsp:setProperty property="user" name="database" value="jspuser" />
   <jsp:setProperty property="password" name="database" value="jspuser" />
 </jsp:useBean>
 <%
   database.connectDB();
-  database.query("select * from travel;");
-  ResultSet rs = database.getRS();
-
+  request.setCharacterEncoding("UTF-8");
   String name = request.getParameter("name");
-  String location = request.getParameter("location");
   String photo = request.getParameter("photo");
   String description = request.getParameter("description");
   String message = "";
-  if (name != null && location != null && photo != null && description != null){
+  if (name != null && photo != null && description != null){
     database.connectDB();
-    database.insertData(name,location,photo,description);
+    database.insertData(name,photo,description);
     message = "新增成功！";
   }else{
     message = "新增失敗";
@@ -76,7 +73,7 @@
                 <div class="top-left-part">
                     <!-- Logo -->
                     <a class="logo" href="index.jsp"></a>
-                    <h style="font-size:25px;">旅遊景點後台管理</h>
+                    <h style="font-size:25px;">英雄聯盟後台管理</h>
 
                 </div>
             </div>
@@ -124,7 +121,6 @@
                   <div class="col-sm-12">
                       <div class="white-box">
                           <h3 class="box-title"><%=name%></h3>
-                          <p>地點：<%=location%></p>
                           <p>照片：<img src="<%=photo%>"/></p>
                           <p>描述：<%=description%></p>
                           <button class="btn btn-primary" onclick="window.open('index.jsp','_self')">確定</button>
